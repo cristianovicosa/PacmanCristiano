@@ -73,8 +73,8 @@ public class PacmanVinicius extends base.Jogo {
             Logger.getLogger(PacmanVinicius.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        //Quadro inicial
         quadro = 0;
-        //x = y = 0;
         //Começa indo para a direita.
         direcao = KeyEvent.VK_RIGHT;
 
@@ -97,7 +97,6 @@ public class PacmanVinicius extends base.Jogo {
             System.out.println(largura + " " + altura);
 
             //Pegar a posição inicial do pacman. Onde está o 5 no mapa.
-            //FAZER!
             x = y = 0;
 
         } catch (FileNotFoundException ex) {
@@ -122,7 +121,7 @@ public class PacmanVinicius extends base.Jogo {
             }
         }
         g.drawImage(pacman.getSubimage(quadro * 30, (direcao - 37) * 30, TAM, TAM),
-                x, y, null);
+                x * MAPA_X_PIXEL, y * MAPA_X_PIXEL, null);
     }
 
     @Override
@@ -136,7 +135,7 @@ public class PacmanVinicius extends base.Jogo {
         switch (direcao) {
             //Vai andar de 1 em 1 pixel, por padrão.
             case KeyEvent.VK_RIGHT:
-                if (x < largura - TAM) {
+                if (x < totalColunas - 1) {
                     x++;
                 }
                 break;
@@ -146,7 +145,7 @@ public class PacmanVinicius extends base.Jogo {
                 }
                 break;
             case KeyEvent.VK_DOWN:
-                if (y < alturaReal - TAM) {
+                if (y < totalLinhas - 1) {
                     y++;
                 }
                 break;
@@ -167,6 +166,7 @@ public class PacmanVinicius extends base.Jogo {
         }
     }
 
+    //Retorna o caracter que está na posição linha x coluna
     private char charAt(int linha, int coluna) {
         return mapa.get(linha).charAt(coluna);
     }
