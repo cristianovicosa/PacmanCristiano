@@ -9,7 +9,10 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -20,16 +23,16 @@ import javax.imageio.ImageIO;
  */
 public class PacmanVinicius extends base.Jogo {
 
-    //Objeto para armazenar o PNG do pacman
+    //Objeto para armazenar o PNG do pacman.
     BufferedImage pacman;
 
     //Tamanho fixo de cada boneco, em pixels.
     final int TAM = 28;
 
-    //Quadro indicador de qual boneco pegar a cada momento
+    //Quadro indicador de qual boneco pegar a cada momento.
     int quadro;
 
-    //Posição x e y, em pixels, que o pacman estará a cada momento
+    //Posição x e y, em pixels, que o pacman estará a cada momento.
     int x, y;
 
     //Direcao para a qual o pacman vai.
@@ -38,25 +41,35 @@ public class PacmanVinicius extends base.Jogo {
     //Altura real (Precisa disso no MAC, talvez em outros OS não precise.
     int alturaReal;
     
+    //Mapa.
+    private ArrayList<String> mapa;
+     
+    //Total de linhas e total de colunas que há no arquivo do mapa.
+    private int totalLinhas;
+    private int totalColunas;
+    
     //Correspondência de posição no mapa com pixels na tela: 
     //cada posição tem quantos pixels?
-    final int MAPA_X_PIXEL = 2;
-
+    final int MAPA_X_PIXEL = 4;
+    
+    
+    
     public static void main(String[] args) {
         base.JogoApp.inicia(new PacmanVinicius());
     }
+    
 
     public PacmanVinicius() {
         titulo = "Pacman do Vinícius";
-        atraso = 2;
+        atraso = 3;
         
         /*
         ATENÇÃO ESSA DIFERENCIAÇÃO DE ALTURA E ALTURA REAL TALVEZ NÃO SEJA
         NECESSÁRIA. CASO NÃO SEJA, APAGUE O CÓDIGO E FAÇA TUDO EM TERMOS DE
         ALTURA APENAS.        
         */
-        alturaReal = altura;
-        altura += 22;
+        //alturaReal = altura;
+        //altura += 22;
 
         try {
             pacman = ImageIO.read(new File("imagens/pacman.png"));
@@ -68,6 +81,26 @@ public class PacmanVinicius extends base.Jogo {
         x = y = 0;
         //Começa indo para a direita.
         direcao = KeyEvent.VK_RIGHT;
+        
+        try {
+            //Leitura do mapa
+            Scanner s = new Scanner(new File("mapas/mapa.txt"));
+            mapa = new ArrayList<>();
+            while (s.hasNextLine()) {
+                mapa.add(s.next());
+            }
+            s.close();
+            
+            totalLinhas = mapa.size();
+            totalColunas = mapa.get(0).length();
+            
+            largura = totalColunas * MAPA_X_PIXEL;
+            alturaReal = totalLinhas * MAPA_X_PIXEL;
+            //Ajuste necessário, pelo menos no MAC.
+            altura = alturaReal + 22;
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PacmanVinicius.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
