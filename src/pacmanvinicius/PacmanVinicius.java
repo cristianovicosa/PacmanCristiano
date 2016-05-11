@@ -58,7 +58,7 @@ public class PacmanVinicius extends base.Jogo {
 
     public PacmanVinicius() {
         titulo = "Pacman do Vinícius";
-        atraso = 2;
+        atraso = 50;
 
         /*
          ATENÇÃO ESSA DIFERENCIAÇÃO DE ALTURA E ALTURA REAL TALVEZ NÃO SEJA
@@ -133,7 +133,7 @@ public class PacmanVinicius extends base.Jogo {
         }
 
         switch (direcao) {
-            //Vai andar de 1 em 1 pixel, por padrão.
+            //Vai andar de 1 em 1 MAPA_X_PIXEL, por padrão.
             case KeyEvent.VK_RIGHT:
                 if (x < totalColunas - 1) {
                     x++;
